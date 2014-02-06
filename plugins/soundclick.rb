@@ -12,9 +12,8 @@ class Soundclick < PluginBase
     download_link = doc.xpath('//a[starts-with(@href,"/util/downloadSong")]')[0]
     raise CouldNotDownloadVideoError, "No download button found." if download_link.nil?
 
-    download_url = "http://www.soundclick.com#{download_link.attributes["href"].value}"
-    final_download_url = UtilityHelper.get_final_location(download_url)
+    download_url = "http://www.soundclick.com#{download_link.attributes["href"].value.to_s}"
     file_name = options[:id].to_s + ".mp3"
-    {:url => final_download_url, :name => file_name}
+    {:url => download_url, :name => file_name}
   end
 end

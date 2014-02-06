@@ -12,9 +12,8 @@ class GotInstrumentals < PluginBase
     download_button = doc.at("a.dlbtnsong1")
     raise CouldNotDownloadVideoError, "No download button found." if download_button.nil?
 
-    download_url = "http://gotinstrumentals.com#{download_button.attributes["href"].value}"
-    final_download_url = UtilityHelper.get_final_location(download_url)
+    download_url = "http://gotinstrumentals.com#{download_button.attributes["href"].value.to_s}"
     file_name = options[:id].to_s + ".mp3"
-    {:url => final_download_url, :name => file_name}
+    {:url => download_url, :name => file_name}
   end
 end
