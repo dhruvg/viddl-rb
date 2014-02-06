@@ -108,7 +108,7 @@ class Youtube < PluginBase
       urls_formats    = extract_urls_formats(video_info)
       selected_format = choose_format(urls_formats)
       title           = video_params[:title]
-      file_name       = PluginBase.make_filename_safe(title) + "." + VIDEO_FORMATS[selected_format][:extension]
+      file_name       = (@options[:id] || PluginBase.make_filename_safe(title)).to_s + "." + VIDEO_FORMATS[selected_format][:extension]
 
       {:url => urls_formats[selected_format], :name => file_name}
     end
@@ -126,7 +126,7 @@ class Youtube < PluginBase
       urls_formats    = parse_stream_map(url_decode(stream_map))
       selected_format = choose_format(urls_formats)
       title           = video_info[/<meta name="title" content="([^"]*)">/, 1]
-      file_name       = PluginBase.make_filename_safe(title) + "." + VIDEO_FORMATS[selected_format][:extension]
+      file_name       = (@options[:id] || PluginBase.make_filename_safe(title)).to_s + "." + VIDEO_FORMATS[selected_format][:extension]
 
       # cleaning
       clean_url = urls_formats[selected_format].gsub(/\\u0026[^&]*/, "").split(',type=video').first

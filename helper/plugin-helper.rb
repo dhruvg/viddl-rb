@@ -3,8 +3,12 @@ module ViddlRb
   class PluginBase
 
     #this exception is raised by the plugins when it was not 
-    #possible to donwload the video for some reason.
+    #possible to download the video for some reason.
     class CouldNotDownloadVideoError < StandardError; end
+
+    #this exception is raised by the plugins when no id is provided
+    #and no fallback option is implemented for generating the file name
+    class CannotMakeFileNameError < StandardError; end
 
     #some static stuff
     class << self
@@ -53,6 +57,10 @@ module ViddlRb
         PluginBase.io.printf(string, *objects)
       end
       nil
+    end
+
+    def self.get_http_url(url)
+      url.sub(/https?:\/\//, "http:\/\/")
     end
   end
 

@@ -1,4 +1,5 @@
 require 'open-uri'
+
 class Soundcloud < PluginBase
   # this will be called by the main app to check whether this plugin is responsible for the url passed
   def self.matches_provider?(url)
@@ -11,7 +12,7 @@ class Soundcloud < PluginBase
     download_filename = doc.at("#main-content-inner img[class=waveform]").attributes["src"].value.to_s.match(/\.com\/(.+)\_/)[1]
     download_url      = "http://media.soundcloud.com/stream/#{download_filename}"
     final_url         = UtilityHelper.get_final_location(download_url)
-    file_name         = transliterate("#{doc.at('//h1/em').text.chomp}") + ".mp3"
+    file_name         = (options[:id] || transliterate("#{doc.at('//h1/em').text.chomp}")).to_s + ".mp3"
 
     [{:url => final_url, :name => file_name}]
   end
@@ -35,9 +36,5 @@ class Soundcloud < PluginBase
     str.gsub!(/\ +/, '-')
 
     str
-  end
-
-  def self.get_http_url(url)
-    url.sub(/https?:\/\//, "http:\/\/")
   end
 end

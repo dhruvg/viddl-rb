@@ -33,14 +33,17 @@ module ViddlRb
   #throws an error, throw PluginError.
   #the reason for returning an array is because some urls will give multiple
   #download urls (for example a Youtube playlist url).
-  def self.get_urls_names(url)
+  #id corresponds to a unique identifier, which if provided, replaces the filename
+  def self.get_urls_names(url, id = nil)
     plugin = PluginBase.registered_plugins.find { |p| p.matches_provider?(url) }
 
     if plugin 
       begin
         #we'll end up with an array of hashes with they keys :url and :name
-        urls_filenames = plugin.get_urls_and_filenames(url)
+        urls_filenames = plugin.get_urls_and_filenames(url, { :id => id })
       rescue PluginBase::CouldNotDownloadVideoError => e
+        raise_download_error(e)
+      rescue PluginBase::CannotMakeFileNameError => e
         raise_download_error(e)
       rescue StandardError => e
         raise_plugin_error(e, plugin)
@@ -52,20 +55,20 @@ module ViddlRb
   end
 
   #returns an array of download urls for the given video url.
-  def self.get_urls(url)
-    urls_filenames = get_urls_names(url)
+  def self.get_urls(url, id = nil)
+    urls_filenames = get_urls_names(url, id)
     urls_filenames.nil? ? nil : urls_filenames.map { |uf| uf[:url] }
   end
 
   #returns an array of filenames for the given video url.
-  def self.get_names(url)
-    urls_filenames = get_urls_names(url)
+  def self.get_names(url, id = nil)
+    urls_filenames = get_urls_names(url, id)
     urls_filenames.nil? ? nil : urls_filenames.map { |uf| uf[:name] }
   end
 
   #same as get_urls_and_filenames but with the extensions only.
-  def self.get_urls_exts(url)
-    urls_filenames = get_urls_names(url)
+  def self.get_urls_exts(url, id = nil)
+    urls_filenames = get_urls_names(url, id)
     urls_filenames.map do |uf|
       ext = File.extname(uf[:name])
       {:url => uf[:url], :ext => ext}
