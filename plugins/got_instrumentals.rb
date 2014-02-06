@@ -14,6 +14,6 @@ class GotInstrumentals < PluginBase
 
     download_url = "http://gotinstrumentals.com#{download_button.attributes["href"].value.to_s}"
     file_name = options[:id].to_s + ".mp3"
-    {:url => download_url, :name => file_name}
+    [{:url => download_url, :name => file_name}]
   end
 end

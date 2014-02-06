@@ -14,6 +14,6 @@ class Soundclick < PluginBase
 
     download_url = "http://www.soundclick.com#{download_link.attributes["href"].value.to_s}"
     file_name = options[:id].to_s + ".mp3"
-    {:url => download_url, :name => file_name}
+    [{:url => download_url, :name => file_name}]
   end
 end
