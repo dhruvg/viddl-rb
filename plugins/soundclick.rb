@@ -7,7 +7,7 @@ class Soundclick < PluginBase
   end
 
   def self.get_urls_and_filenames(url, options = {})
-    raise CannotMakeFileNameError, "Must provide an id." if options[:id].blank?
+    raise CannotMakeFileNameError, "Must provide an id." if options[:id].nil?
     doc = Nokogiri::HTML(open(get_http_url(url)))
     download_link = doc.xpath('//a[starts-with(@href,"/util/downloadSong")]')[0]
     raise CouldNotDownloadVideoError, "No download button found." if download_link.nil?
