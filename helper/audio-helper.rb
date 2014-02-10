@@ -35,7 +35,8 @@ module ViddlRb
           output_extension = audio_format
         end
         no_ext_filename = File.basename(file_name, File.extname(file_name))
-        output_file_path = File.join(save_dir, "#{no_ext_filename}.#{output_extension}")
+        audio_file_name = "#{no_ext_filename}.#{output_extension}"
+        output_file_path = File.join(save_dir, audio_file_name)
         escaped_output_file_path = Shellwords.escape(output_file_path)
         if File.exist?(output_file_path)
           puts "Audio file seems to exist already, removing it before extraction."
@@ -43,6 +44,7 @@ module ViddlRb
         end
         Open3.popen3("ffmpeg -i #{escaped_input_file_path} -vn -acodec copy #{escaped_output_file_path}") { |stdin, stdout, stderr, wait_thr| stdout.read }
         puts "Done extracting audio to #{output_file_path}"
+        return audio_file_name
       else
         raise "ERROR: Error while checking audio track of #{file_path}"
       end
