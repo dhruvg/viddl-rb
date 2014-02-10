@@ -9,6 +9,7 @@ require "cgi"
 require "open-uri"
 require "stringio"
 require "download-helper.rb"
+require "audio-helper.rb"
 require "plugin-helper.rb"
 require "utility-helper.rb"
 
