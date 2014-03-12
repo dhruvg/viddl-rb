@@ -1,7 +1,7 @@
 require 'open-uri'
 
 # Basically, we expect these links should point to the actual file to begin with.
-class Riotshare < PluginBase
+class DlShared < PluginBase
   # this will be called by the main app to check whether this plugin is responsible for the url passed
   def self.matches_provider?(url)
     url.include?("dl.shared.com")

@@ -1,6 +1,6 @@
 require 'open-uri'
 
-class GeTt < PluginBase
+class Sharebeast < PluginBase
   # this will be called by the main app to check whether this plugin is responsible for the url passed
   def self.matches_provider?(url)
     url.include?("sharebeast.com")
