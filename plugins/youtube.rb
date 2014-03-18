@@ -15,7 +15,7 @@ class Youtube < PluginBase
 
     return_value = videos.map do |video|
       format = @format_picker.pick_format(video)
-      make_url_filname_hash(video, format)
+      make_url_filename_hash(video, format, options)
     end
 
     return_value.empty? ? download_error("No videos could be downloaded.") : return_value
@@ -43,9 +43,9 @@ class Youtube < PluginBase
     videos.reject(&:nil?)
   end
 
-  def self.make_url_filname_hash(video, format)
+  def self.make_url_filename_hash(video, format, options)
     url = video.get_download_url(format.itag)
-    name = PluginBase.make_filename_safe(video.title) + ".#{format.extension}"
+    name = (options[:id] || PluginBase.make_filename_safe(video.title)) + ".#{format.extension}"
     {url: url, name: name}
   end
 end
