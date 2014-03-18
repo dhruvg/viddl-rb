@@ -23,7 +23,9 @@ Viddl-rb supports the following command line options:
 -f, --filter REGEX               Filters a video playlist according to the regex (Youtube only right now)
 -s, --save-dir DIRECTORY         Specifies the directory where videos should be saved
 -d, --downloader TOOL            Specifies the tool to download with. Supports 'wget', 'curl' and 'net-http'
--q, --quality QUALITY            Specifies the video format and resolution in the following way => resolution:extension (e.g. 720:mp4). Currently only supported by the Youtube plugin.
+-q, --quality QUALITY            Specifies the video format and resolution in the following way: width:height:res (e.g. 1280:720:mp4)
+                                 The width, height and resolution may be omitted with a *.
+                                 For example, to match any quality with a height of 720 pixels in any format specify --quality *:720:*
 -h, --help                       Displays the help screen
 ```
 
@@ -38,6 +40,10 @@ Setting the video save directory:
 The --save-dir option works with both absolute and relative paths (relative based on the directory viddl-rb is run from).
 If you want to save to a folder with spaces in it, you have to quote the path like this: --save-dir "C:/my videos"
 
+__Want faster download speeds?__
+
+Consider installing aria2 (http://aria2.sourceforge.net/). aria2 differs from curl and wget in that it supports opening multiple connections when downloading a file which may give significant speed improvements if the download service limits the bandwidth a connection receives. viddl-rb will use aria2 as the default downloader if it is available.
+
 __Youtube plugin specifics:__
 
 Download all videos on a playlist:
@@ -46,7 +52,10 @@ Download all videos on a playlist:
 Download all videos from a user:
     ```viddl-rb http://www.youtube.com/user/tedtalksdirector```
 
-Filter videos to download from a user/playlist:
+Download all videos from a channel:
+    ```viddl-rb http://www.youtube.com/channel/UCa2K4rTxFfnyOhujv7Dmwlg```
+
+Filter videos to download from a user/channel/playlist:
     ```viddl-rb http://www.youtube.com/user/tedtalksdirector --filter /internet/i```
 
 The --filter argument accepts a regular expression and will only download videos where the title matches the regex.
@@ -110,9 +119,8 @@ end
 
 __Requirements:__
 
-* curl/wget or the [progress bar](http://github.com/nex3/ruby-progressbar/) gem
+* curl/wget/aria2c or the [progress bar](http://github.com/nex3/ruby-progressbar/) gem
 * [Nokogiri](http://nokogiri.org/)
-* [Mechanize](http://mechanize.rubyforge.org/)
 * ffmpeg if you want to extract audio tracks from the videos
 
 __Co Maintainers:__

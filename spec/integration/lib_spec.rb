@@ -1,8 +1,7 @@
 #encoding: utf-8
 
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
+$LOAD_PATH << File.join(File.dirname(__FILE__), '../..', 'lib')
 
-require 'rubygems'
 require 'minitest/autorun'
 require 'rest_client'
 require 'viddl-rb.rb'
@@ -10,7 +9,7 @@ require 'viddl-rb.rb'
 class LibTest < Minitest::Test
 
   def test_can_get_single_youtube_url_and_filename
-    can_get_single_youtube_url_and_filename("https://www.youtube.com/watch?v=VlQM_5AAjY8", "晩夏（ひとりの季節）")
+    can_get_single_youtube_url_and_filename("https://www.youtube.com/watch?v=kCfiKj8Iehk", "いいぜメーン")
   end
 
   def test_can_get_single_youtube_url_and_filename_for_non_embeddable_videos
@@ -19,7 +18,8 @@ class LibTest < Minitest::Test
 
   def test_can_get_youtube_playlist
     download_urls = ViddlRb.get_urls_names("http://www.youtube.com/playlist?list=PL41AAC84379472529")
-    assert(download_urls.size == 3)
+    assert download_urls.size == 3,
+      "Expected size to be 3 but was #{download_urls.size}"
   end
 
   def test_can_extract_extensions_from_url_names
@@ -57,7 +57,7 @@ class LibTest < Minitest::Test
   end
 
   def valid_youtube_extension?(ext)
-    valid = ViddlRb::Youtube::VIDEO_FORMATS.map { |id, format| "." + format[:extension] }
+    valid = ViddlRb::Youtube::FormatPicker::FORMATS.map { |format| "." + format.extension }
     valid.include?(ext)
   end  
 end

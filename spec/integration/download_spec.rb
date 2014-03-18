@@ -1,29 +1,25 @@
-require 'rubygems'
+
 require 'minitest/autorun'
 require 'rest_client'
 require 'progressbar'
 
 class IntegrationTest < Minitest::Test
+
+  VIDDLRB_PATH = File.expand_path('../../../bin/viddl-rb', __FILE__)
   
   #For now just one, downloads are big enough as it is and we don't want to annoy travis
   def test_youtube
-    download_test('http://www.youtube.com/watch?v=CFw6s0TN3hY')
-    download_test_other_tools('http://www.youtube.com/watch?v=9uDgJ9_H0gg')  # this video is only 30 KB
+    #download_test('http://www.youtube.com/watch?v=CFw6s0TN3hY')
+    download_test_other_tools('http://www.youtube.com/watch?v=9uDgJ9_H0gg') # this video is only 30 KB
   end
-
   
   private
 
-  def viddlrb_path
-    File.expand_path('../../bin/viddl-rb', __FILE__)
-  end
-  
-  
   #Test video download and audio extraction
   def download_test(url)
     Dir.mktmpdir do |tmp_dir|
       Dir.chdir(tmp_dir) do
-        assert system("ruby #{viddlrb_path} #{url} --extract-audio --quality 360:webm --downloader aria2c")
+        assert system("ruby #{VIDDLRB_PATH} #{url} --extract-audio --quality *:360:webm --downloader aria2c")
         new_files = Dir['*']
         assert_equal 2, new_files.size
       
@@ -39,8 +35,8 @@ class IntegrationTest < Minitest::Test
   def download_test_other_tools(url)
     %w[net-http curl wget].shuffle.each do |tool|
       Dir.mktmpdir do |tmp_dir|
-        Dir.chdir(tmp_dir) do      
-          assert system("ruby #{viddlrb_path} #{url} --downloader #{tool}")
+        Dir.chdir(tmp_dir) do
+          assert system("ruby #{VIDDLRB_PATH} #{url} --downloader #{tool}")
           new_files = Dir['*']
           assert_equal new_files.size, 1
           assert File.size(new_files[0]) > 28000

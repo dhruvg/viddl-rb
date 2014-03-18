@@ -63,6 +63,4 @@ module ViddlRb
       url.sub(/https?:\/\//, "http:\/\/")
     end
   end
-
 end
-
