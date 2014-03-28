@@ -75,10 +75,17 @@ module ViddlRb
     # recursively get the final location (after following all redirects)
     # for an url.
     def self.get_final_location(url)
-      Net::HTTP.get_response(URI.parse(url)) do |res|
-        location = res["location"]
-        return url if location.nil?
-        return get_final_location(location)
+      begin
+        Net::HTTP.get_response(URI.parse(url)) do |res|
+          location = res["location"]
+          return url if location.nil?
+          return get_final_location(location)
+        end
+      rescue EOFError => e
+        if !/end of file reached/.match(e.message).nil?
+          # The pre-redirect url is sufficient, no need to follow redirects
+          return url
+        end
       end
     end
 
