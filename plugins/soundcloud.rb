@@ -21,7 +21,7 @@ class Soundcloud < PluginBase
       track_data  = JSON.parse(match[1])
       
       file_url    = track_data['streamUrl']
-      file_name   = options[:id] || self.make_filename_safe(track_data['title'].to_s) + '.mp3'
+      file_name   = (options[:id] || self.make_filename_safe(track_data['title'].to_s)) + '.mp3'
 
       url_and_files << {url: file_url, name: file_name}
     end
