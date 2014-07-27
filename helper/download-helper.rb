@@ -27,7 +27,7 @@ module ViddlRb
       end,
 
       Tool.new(:wget) do |url, path|
-        "wget '#{url.inspect}' -O #{path.inspect}"
+        "wget '#{url}' -O #{path.inspect}"
       end,
 
       Tool.new(:curl) do |url, path|
