@@ -62,6 +62,7 @@ module ViddlRb
         else
           tool = options[:tool]
           puts "Using #{tool.name}"
+          puts tool.get_command(file_url, file_path)
           success = system tool.get_command(file_url, file_path)
         end
         #we were successful, we're outta here
