@@ -62,5 +62,9 @@ module ViddlRb
     def self.get_http_url(url)
       url.sub(/https?:\/\//, "http:\/\/")
     end
+
+    def self.get_https_url(url)
+      url.sub(/https?:\/\//, "https:\/\/")
+    end
   end
 end
