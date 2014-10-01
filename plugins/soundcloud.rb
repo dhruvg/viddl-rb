@@ -8,11 +8,10 @@ class Soundcloud < PluginBase
     url.include?("soundcloud.com")
   end
 
-
   # return the url for original video file and title
   def self.get_urls_and_filenames(url, options = {})
     url_and_files = []
-    doc           = Nokogiri::HTML(open(get_http_url(url)))
+    doc           = Nokogiri::HTML(open(url))
 
     # locate the controller script that contains all the tracks data
     # this will work for either artist's or track's pages
